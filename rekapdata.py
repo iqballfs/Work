@@ -55,10 +55,28 @@ for i in range(len(values)):
 
 df = pd.DataFrame(rows)
 
+def format_rupiah(value):
+    if value >= 1_000_000_000_000:
+        return f"Rp {value / 1_000_000_000_000:.1f}T"
+    elif value >= 1_000_000_000:
+        return f"Rp {value / 1_000_000_000:.1f}M"
+    elif value >= 1_000_000:
+        return f"Rp {value / 1_000_000:.1f}Jt"
+    else:
+        return f"Rp {value:,}".replace(",", ".")
+
+df["Label"] = df.apply(
+    lambda row: f'{row["Level_3"]}<br>{format_rupiah(row["Value"])}',
+    axis=1
+)
+
 import plotly.graph_objects as go
 
 # Buat kolom label gabungan biar tampil jelas
-df["Label"] = df["Level_3"] + "<br>Rp {:,.0f}".format(df["Value"]).replace(",", ".")
+df["Label"] = df.apply(
+    lambda row: f'{row["Level_3"]}<br>Rp {row["Value"]:,}'.replace(",", "."),
+    axis=1
+)
 
 fig = px.sunburst(
     df,
