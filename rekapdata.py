@@ -19,42 +19,48 @@ client = gspread.authorize(creds)
 sheet = client.open("Dummy").worksheet("Output")  # Ganti dengan nama sheet kamu
 raw = sheet.get_all_values()
 
+# --- Pastikan sheet memiliki minimal 4 baris ---
+if len(raw) < 4:
+    st.error("Data di sheet kurang dari 4 baris (header1, header2, header3, value).")
+    st.stop()
+
+# Ambil baris-baris header dan nilai
 header1 = raw[0]  # Level_1
 header2 = raw[1]  # Level_2
-values  = raw[2]  # Nilai (hasil formula)
+header3 = raw[2]  # Level_3
+values  = raw[3]  # Value
 
+# === PARSING DATA ===
 rows = []
-last_major = ""
 for i in range(len(values)):
     h1 = header1[i].strip()
     h2 = header2[i].strip()
+    h3 = header3[i].strip()
     val = values[i].replace(".", "").replace(",", "").strip()
 
-    if h1 != "":
-        last_major = h1
-
-    if h2 == "" or val == "":
+    if not h1 or not h2 or not h3 or not val:
         continue
 
     try:
         val_int = int(val)
         rows.append({
-            "Level_1": last_major,
-            "Level_2": h1 if h1 != last_major else h2,
-            "Level_3": h2,
+            "Level_1": h1,
+            "Level_2": h2,
+            "Level_3": h3,
             "Value": val_int
         })
-    except:
+    except Exception as e:
+        st.text(f"Kolom {i} skip karena error: {e}")
         continue
 
 df = pd.DataFrame(rows)
-st.write("Jumlah baris hasil parsing:", len(df))
-st.dataframe(df.head())
+
 # === STREAMLIT DASHBOARD ===
 st.title("Distribusi Dana Live Report (Terhubung Google Sheets)")
+st.write(f"Jumlah baris hasil parsing: {len(df)}")
 st.dataframe(df)
 
-# Sunburst chart
+# === SUNBURST CHART ===
 if not df.empty:
     fig = px.sunburst(
         df,
