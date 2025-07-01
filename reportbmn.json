@@ -1,13 +1,1 @@
-{
-  "type": "service_account",
-  "project_id": "live-report-bmn",
-  "private_key_id": "9e64746e21d88f872a4fccd0615758d5b13ccf92",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC6KGase1tL7bfV\ns7XE3fh9EzHlMbg9z6mwoQTOacmRAv7ZJxAQnXw5m7edqexqPbcdJ6h8fx0//Yk9\nZ277mkVVyJoqGp5kfmKGSyaZvYaXsN83ILQiYaLckRU9bfIuExhxWN4GAN1aa60W\nZEsk7aiDIu1eGDyubkUgkQzPR70lesh64yiQuFSNZiLwTcjq0YIuuL1e1orcIhl5\nArHIu1ER006ymAFmBILt2gukeTVx7U5aR7CGnniKpC94YGCCDH+Zw1f7LZ5XyTmB\n6HMeckN/iwcaAF71ZC0ulTvmPuKQO6TKaS7s8ShzEM3t/cvqgaYnRyzUoPsJUI3+\nj/T9lPCTAgMBAAECggEAQL35S2ZRb5w6satg/Zk3KQSqdyvuCC03NlMhsUnwTKsO\nh+ZCe4zR3dUurDojGyXgj9axja7FtPIPr1fQLNfP4lA0cY01ZfzgdhUf1RspeosM\nbodErqpnMi+RA/6/Wc/RUeZWvR7C3QYSufVifvLahtT4WZ+zRvTZvMRFgLdR7Hzp\n5pXNjkOVBFnaSOm9Rpf7EO5X9Wi2zGNK5xrIeeIXCABSRBv5/QwKmc9AeJnPa4VX\nQdhNFmiArKVDZLl+cRkAoBH30tiGExjqSTMlo22dwGlcm2zTCRo9IxeHPmTZaW8E\ns4HKQIToeOcMUK9d83+N16jdHft4J3UCpjUzxOGjPQKBgQDfZ2UuvsRAkYRjnQNP\nfbGeygiVvGKE1zPUSpA3+XlJuIQJagZNOuLj0/xm2T4yi3wT/tRLcNPcC+mVRknx\nHhXYm81KdOM/m3+IhPxGv7gVcVlU3gjvIbf16FEX5Z+06XipDRQXBx3dWiNSuxlU\ngY/Zmr5YkADSp17KSihcxAyeVQKBgQDVUclrBMrfBXJ3lcheej752iryhEhiwkCZ\n9y9PF+ScBdB6VPXvWS/VaIYEFfgZDRUOlb+jCBUCdJCbN8cdUaaVjFytvI75fbLv\nLr3md+Iw6HLRWq+qkd5LsKse9GI8qNQ+vJ0Y57dTi7jAU+Oq3qoi89j51w2cGUME\n/KS32MnrRwKBgQC2yM0TmwfNYII2UoAj6M6MAfdWM+VTlRQV7M/kzFw9Qhfd7/6p\n77U1/Pr1V2e5SUDCx2wBMZZV4vVBqlnTSu9K4+bqtYo9P8fv9gbHCBPgj3YspuIe\nbbMrIuI+sCSki6Wqg0XdtXfs5NQj22tVJhCBVUfKBEB4GnLHBjfR9qHwZQKBgCK6\nHs0iSZiG/XyEUMs4oXnxT16NtG8HapbmC7iXjirsM2VG4YamgUf/rRmLLgl9/LiU\nHk9/KFRu/3+VU//s4+6inA/Yi3oIQZH4jQew6ozFurNkTQa6mnK9/w2aAUgYv/y6\nneSJDGo4a8o7neuaNh5cji0WGmwYHLX6HyKi0zRPAoGBALrVovDxFoRgk9OLc9GL\n6+virOS/sfUztbMPDM4VNVy+QpXzzc91viouLIx2StE/3/8IFxDcJ+6phhs8hQ+b\nbPSE0+hfMVrL7qyHAhczXCUWHEc7lF3KE5mmJpRmjYzM2/AQGbmAMKEFArk70N8a\ncDmHkHGqyP5flrH4QvYLALtS\n-----END PRIVATE KEY-----\n",
-  "client_email": "streamlit-sheet-access@live-report-bmn.iam.gserviceaccount.com",
-  "client_id": "116430248270487517901",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/streamlit-sheet-access%40live-report-bmn.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
+qq
