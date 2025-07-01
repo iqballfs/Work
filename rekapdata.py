@@ -55,6 +55,42 @@ for i in range(len(values)):
 
 df = pd.DataFrame(rows)
 
+def format_rupiah(value):
+    if value >= 1_000_000_000_000:
+        return f"Rp {value/1_000_000_000_000:.1f}T"
+    elif value >= 1_000_000_000:
+        return f"Rp {value/1_000_000_000:.1f}M"
+    elif value >= 1_000_000:
+        return f"Rp {value/1_000_000:.1f}Jt"
+    else:
+        return f"Rp {value:,}".replace(",", ".")
+
+df["Label"] = df["Level_3"] + "<br>" + df["Value"].apply(format_rupiah)
+
+import plotly.graph_objects as go
+
+# Buat kolom label gabungan biar tampil jelas
+df["Label"] = df["Level_3"] + "<br>Rp {:,.0f}".format(df["Value"]).replace(",", ".")
+
+fig = px.sunburst(
+    df,
+    path=['Level_1', 'Level_2', 'Label'],  # gunakan Label di Level_3
+    values='Value',
+    color='Level_1',
+    title="Struktur Dana Live Report (Live Data)",
+)
+
+# Tambahkan hovertemplate agar muncul detail saat mouse hover
+fig.update_traces(
+    hovertemplate='<b>%{label}</b><br>Nilai: Rp %{value:,}<extra></extra>',
+)
+
+# Optional: ubah layout lebih clean
+fig.update_layout(
+    margin=dict(t=50, l=0, r=0, b=0),
+    uniformtext=dict(minsize=10, mode='hide')  # biar teks kecil bisa di-hide otomatis
+)
+
 # === STREAMLIT DASHBOARD ===
 st.title("Distribusi Dana Live Report (Terhubung Google Sheets)")
 st.write(f"Jumlah baris hasil parsing: {len(df)}")
