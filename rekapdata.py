@@ -55,18 +55,6 @@ for i in range(len(values)):
 
 df = pd.DataFrame(rows)
 
-def format_rupiah(value):
-    if value >= 1_000_000_000_000:
-        return f"Rp {value/1_000_000_000_000:.1f}T"
-    elif value >= 1_000_000_000:
-        return f"Rp {value/1_000_000_000:.1f}M"
-    elif value >= 1_000_000:
-        return f"Rp {value/1_000_000:.1f}Jt"
-    else:
-        return f"Rp {value:,}".replace(",", ".")
-
-df["Label"] = df["Level_3"] + "<br>" + df["Value"].apply(format_rupiah)
-
 import plotly.graph_objects as go
 
 # Buat kolom label gabungan biar tampil jelas
