@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 import gspread
 from google.oauth2.service_account import Credentials
 import json
@@ -15,19 +16,21 @@ creds = Credentials.from_service_account_info(service_account_info, scopes=scope
 client = gspread.authorize(creds)
 
 # === AMBIL DATA DARI SHEET ===
-sheet = client.open("Dummy").worksheet("Output")
+sheet = client.open("Dummy").worksheet("Output")  # Ganti dengan nama sheet kamu
 raw = sheet.get_all_values()
 
+# --- Pastikan sheet memiliki minimal 4 baris ---
 if len(raw) < 4:
     st.error("Data di sheet kurang dari 4 baris (header1, header2, header3, value).")
     st.stop()
 
+# Ambil baris-baris header dan nilai
 header1 = raw[0]  # Level_1
 header2 = raw[1]  # Level_2
 header3 = raw[2]  # Level_3
 values  = raw[3]  # Value
 
-# === PARSING DATA KE DATAFRAME ===
+# === PARSING DATA ===
 rows = []
 for i in range(len(values)):
     h1 = header1[i].strip()
@@ -46,42 +49,68 @@ for i in range(len(values)):
             "Level_3": h3,
             "Value": val_int
         })
-    except:
+    except Exception as e:
+        st.text(f"Kolom {i} skip karena error: {e}")
         continue
 
 df = pd.DataFrame(rows)
 
-# === FUNGSI FORMAT RUPIAH ===
 def format_rupiah(value):
     if value >= 1_000_000_000_000:
-        return f"{value / 1_000_000_000_000:.2f} T"
+        return f"Rp {value / 1_000_000_000_000:.1f}T"
     elif value >= 1_000_000_000:
-        return f"{value / 1_000_000_000:.2f} M"
+        return f"Rp {value / 1_000_000_000:.1f}M"
     elif value >= 1_000_000:
-        return f"{value / 1_000_000:.2f} Jt"
+        return f"Rp {value / 1_000_000:.1f}Jt"
     else:
-        return f"{value:,}".replace(",", ".")
+        return f"Rp {value:,}".replace(",", ".")
 
-# === BIKIN MERMAID SYNTAX ===
-st.title("Diagram Pohon Dana (Mermaid.js dari Google Sheets)")
+df["Label"] = df.apply(
+    lambda row: f'{row["Level_3"]}<br>{format_rupiah(row["Value"])}',
+    axis=1
+)
 
-if df.empty:
-    st.warning("Data kosong atau belum siap.")
+import plotly.graph_objects as go
+
+# Buat kolom label gabungan biar tampil jelas
+df["Label"] = df.apply(
+    lambda row: f'{row["Level_3"]}<br>Rp {row["Value"]:,}'.replace(",", "."),
+    axis=1
+)
+
+fig = px.sunburst(
+    df,
+    path=['Level_1', 'Level_2', 'Label'],  # gunakan Label di Level_3
+    values='Value',
+    color='Level_1',
+    title="Struktur Dana Live Report (Live Data)",
+)
+
+# Tambahkan hovertemplate agar muncul detail saat mouse hover
+fig.update_traces(
+    hovertemplate='<b>%{label}</b><br>Nilai: Rp %{value:,}<extra></extra>',
+)
+
+# Optional: ubah layout lebih clean
+fig.update_layout(
+    margin=dict(t=50, l=0, r=0, b=0),
+    uniformtext=dict(minsize=10, mode='hide')  # biar teks kecil bisa di-hide otomatis
+)
+
+# === STREAMLIT DASHBOARD ===
+st.title("Distribusi Dana Live Report (Terhubung Google Sheets)")
+st.write(f"Jumlah baris hasil parsing: {len(df)}")
+st.dataframe(df)
+
+# === SUNBURST CHART ===
+if not df.empty:
+    fig = px.sunburst(
+        df,
+        path=['Level_1', 'Level_2', 'Level_3'],
+        values='Value',
+        color='Level_1',
+        title="Struktur Dana Live Report (Live Data)"
+    )
+    st.plotly_chart(fig, use_container_width=True)
 else:
-    mermaid = ["graph TD"]
-
-    for _, row in df.iterrows():
-        lv1 = row["Level_1"].replace(" ", "_")
-        lv2 = row["Level_2"].replace(" ", "_")
-        lv3 = row["Level_3"].replace(" ", "_")
-        val_label = format_rupiah(row["Value"])
-
-        # Buat node hierarki: Level_1 → Level_2 → Level_3
-        mermaid.append(f'{lv1}["{row["Level_1"]}"] --> {lv2}["{row["Level_2"]}"]')
-        mermaid.append(f'{lv2} --> {lv3}["{row["Level_3"]}<br>{val_label}"]')
-
-    mermaid_code = "\n".join(mermaid)
-
-    # === TAMPILKAN DI STREAMLIT ===
-    st.markdown("```mermaid\n" + mermaid_code + "\n```")
-    st.caption("Diagram akan otomatis mengikuti isi Google Sheets.")
+    st.warning("Data tidak ditemukan atau belum siap.")
