@@ -48,7 +48,8 @@ for i in range(len(values)):
         continue
 
 df = pd.DataFrame(rows)
-
+st.write("Jumlah baris hasil parsing:", len(df))
+st.dataframe(df.head())
 # === STREAMLIT DASHBOARD ===
 st.title("Distribusi Dana Live Report (Terhubung Google Sheets)")
 st.dataframe(df)
