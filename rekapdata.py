@@ -97,8 +97,6 @@ fig.update_layout(
     uniformtext=dict(minsize=12, mode='hide')
 )
 
-)
-
 # === STREAMLIT DASHBOARD ===
 st.title("Distribusi Dana Live Report (Terhubung Google Sheets)")
 st.write(f"Jumlah baris hasil parsing: {len(df)}")
