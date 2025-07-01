@@ -2,11 +2,17 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
+import json
 
-# === AUTH GOOGLE SHEETS ===
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("reportbmn.json", scope)
+# === AUTH GOOGLE SHEETS DARI st.secrets ===
+scope = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+service_account_info = json.loads(st.secrets["gcp_service_account"])
+creds = Credentials.from_service_account_info(service_account_info, scopes=scope)
 client = gspread.authorize(creds)
 
 # === AMBIL DATA DARI SHEET ===
@@ -34,7 +40,7 @@ for i in range(len(values)):
         val_int = int(val)
         rows.append({
             "Level_1": last_major,
-            "Level_2": h1 if h1 != last_major else h2,  # fallback kalau tidak ada Level_2
+            "Level_2": h1 if h1 != last_major else h2,
             "Level_3": h2,
             "Value": val_int
         })
