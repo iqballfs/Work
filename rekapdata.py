@@ -91,10 +91,12 @@ fig.update_traces(
     hovertemplate='<b>%{label}</b><br>Nilai: Rp %{value:,}<extra></extra>',
 )
 
-# Optional: ubah layout lebih clean
 fig.update_layout(
+    height=900,
     margin=dict(t=50, l=0, r=0, b=0),
-    uniformtext=dict(minsize=10, mode='hide')  # biar teks kecil bisa di-hide otomatis
+    uniformtext=dict(minsize=12, mode='hide')
+)
+
 )
 
 # === STREAMLIT DASHBOARD ===
